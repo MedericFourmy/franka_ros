@@ -5,6 +5,17 @@
 #include <memory>
 #include <string>
 
+#include <pinocchio/fwd.hpp>
+#include <pinocchio/parsers/urdf.hpp>
+#include <pinocchio/algorithm/joint-configuration.hpp>
+#include <pinocchio/algorithm/kinematics.hpp>
+#include <pinocchio/algorithm/center-of-mass.hpp>
+#include <pinocchio/algorithm/centroidal.hpp>
+#include <pinocchio/algorithm/rnea.hpp>
+#include <pinocchio/algorithm/crba.hpp>
+#include <pinocchio/algorithm/frames.hpp>
+
+
 #include <controller_interface/multi_interface_controller.h>
 #include <hardware_interface/robot_hw.h>
 #include <ros/node_handle.h>
@@ -13,6 +24,9 @@
 #include <franka_hw/franka_model_interface.h>
 #include <franka_hw/franka_state_interface.h>
 #include <franka_hw/trigger_rate.h>
+
+
+namespace pin = pinocchio;
 
 namespace franka_example_controllers {
 
@@ -29,6 +43,12 @@ class ModelExampleController
   franka_hw::FrankaModelInterface* model_interface_;
   std::unique_ptr<franka_hw::FrankaModelHandle> model_handle_;
   franka_hw::TriggerRate rate_trigger_{1.0};
+
+  // PINOCCHIO
+  pin::Model model_pin_;
+  pin::Data data_pin_;
+
+
 };
 
 }  // namespace franka_example_controllers

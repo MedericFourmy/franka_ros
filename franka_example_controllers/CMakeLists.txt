@@ -5,6 +5,8 @@ set(CMAKE_BUILD_TYPE Release)
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC")
+
 find_package(catkin REQUIRED COMPONENTS
   controller_interface
   dynamic_reconfigure
@@ -30,6 +32,12 @@ find_package(Franka 0.9.0 QUIET)
 if(NOT Franka_FOUND)
   find_package(Franka 0.8.0 REQUIRED)
 endif()
+
+########################################3
+# PINOCCHIO
+find_package(pinocchio REQUIRED)
+########################################3
+
 
 add_message_files(FILES
   JointTorqueComparison.msg
@@ -122,6 +130,15 @@ add_dependencies(teleop_gripper_node
   ${PROJECT_NAME}_gencpp
   ${PROJECT_NAME}_gencfg
 )
+
+
+########################################
+# PINOCCCHIO
+target_include_directories(franka_example_controllers PUBLIC ${PINOCCHIO_INCLUDE_DIRS})
+target_link_libraries(franka_example_controllers PUBLIC ${PINOCCHIO_LIBRARIES}  )
+# message("PINOCCHIO_INCLUDE_DIRS: ${PINOCCHIO_INCLUDE_DIRS}")
+# message("PINOCCHIO_LIBRARIES: ${PINOCCHIO_LIBRARIES}")
+########################################
 
 ## Installation
 install(TARGETS franka_example_controllers
